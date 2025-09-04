@@ -1,3 +1,11 @@
+<img width="1484" height="1299" alt="image" src="https://github.com/user-attachments/assets/ede056f6-767b-48cd-8997-93e4ddeb4c1e" />
+
+
+<img width="3147" height="1630" alt="image" src="https://github.com/user-attachments/assets/c9cddcd9-5e21-4561-9dc0-2685b45a4433" />
+
+
+<img width="3178" height="1627" alt="image" src="https://github.com/user-attachments/assets/8a4dd7e3-b324-4565-b5d2-55acacf90264" />
+
 # EduCompact
 
 A comprehensive full-stack record management system, ideal for international schools, facilitating the transition from manual file systems to digital record keeping.
@@ -120,57 +128,20 @@ Make sure to change the placeholder passwords (`adminPassword` and `headPassword
 Visit `http://localhost:3000` to access the application.
 
 ##Project Structure
-├── app/                    # Next.js app directory (routes, pages, API endpoints)
-│   ├── api/                # API routes (students, staff, auth, reports, upload)
-│   ├── auth/               # Auth-related pages
-│   ├── reports/            # Reports pages
-│   ├── settings/           # Settings pages
-│   ├── staff/              # Staff pages
-│   ├── students/           # Student pages
-│   ├── globals.css         # Global styles
-│   ├── layout.tsx          # Root layout
-│   └── page.tsx            # Main page
-├── components/             # Reusable React components
-├── hooks/                  # Custom React hooks
-├── lib/                    # Utility libraries (e.g., prisma, auth, file-upload)
-├── prisma/                 # Prisma schema and DB tools
-├── public/                 # Static assets
-├── scripts/                # Seed and utility scripts
-├── styles/                 # Additional styles
-├── .env.example            # Example environment variables
-├── package.json            # Project scripts and dependencies
-├── next.config.mjs         # Next.js configuration
-├── tsconfig.json           # TypeScript configuration
-├── tailwind.config.ts      # Tailwind CSS configuration
-├── postcss.config.mjs      # PostCSS configuration
-├── middleware.ts           # NextAuth middleware for route protection
-└── ...                     # Other config and build files
+
+
+<img width="711" height="689" alt="image" src="https://github.com/user-attachments/assets/44c6bffb-7c0b-4ff3-ab7c-5362a8010e16" />
+
 
 ## File Upload Structure
 
 The system organizes uploaded files in the following structure:
 
 \`\`\`
-public/
-├── uploads/
-│   ├── students/
-│   │   ├── studentPhoto
-│   │   ├── birthCertificateFile
-│   │   ├── passportFile
-│   │   ├── studentPassFile
-│   │   ├── recentReportFile
-│   │   └── additionalAttachment
-│   └── staff/
-│       ├── resume
-│       ├── passportAttachment
-│       ├── residentPermitAttachment
-│       ├── workPermitAttachment
-│       ├── teachingLicenseAttachment
-│       ├── tcuAttachment
-│       ├── nationalIdAttachment
-│       ├── nssfAttachment
-│       └── tinAttachment
-\`\`\`
+
+
+<img width="327" height="512" alt="image" src="https://github.com/user-attachments/assets/6dd38914-9dae-468a-95ae-58d9527a9e64" />
+
 
 ## Database Schema
 
@@ -220,4 +191,10 @@ The system is ready for deployment with:
 
 ## License
 
-This project is licensed under the MIT License.
+# MIT License
+Copyright (c) 2025 EduCompact
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+1. The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+2. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
