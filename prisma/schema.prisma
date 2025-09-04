@@ -1,0 +1,398 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// NextAuth.js Models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String
+  role          UserRole  @default(HEAD)
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum UserRole {
+  ADMINISTRATOR
+  HEAD
+}
+
+model Student {
+  id              String       @id @default(cuid())
+  academicYear    String?
+  dateOfAdmission DateTime?
+  class           Classes
+  registrationNo  String?       @unique
+  status	        StudentStatus @default(ACTIVE)
+
+  // personal
+  firstName     String
+  middleName    String?
+  surname       String
+  preferredName String?
+  nationality   String?
+  dateOfBirth   DateTime
+  gender        Gender?
+  religion      String?
+
+  // legacy fields for backward compatibility
+  lastName String?
+  email    String?
+  phone    String?
+  address  String?
+
+  // guardians (1:M)
+  guardians Guardian[]
+
+  // documents
+  studentPhoto         String?
+  birthCertificatNo    String?
+  birthCertificateFile String?
+  passportNo           String?
+  expiryDate           DateTime?
+  passportFile         String?
+  studentPassNo        String?
+  dateOfExpiry         DateTime?
+  studentPassFile      String?
+
+  // former school
+  nameOfSchool     String?
+  location         String?
+  reasonForExit    String?
+  recentReportFile String?
+  additionalAttachment	String?
+
+  // general
+  bloodType                      BloodTypes?
+  whoLivesWithStudentAtHome      String?
+  primaryLanguageAtHome          String?
+  otherChildrenAtCCIS            Boolean?
+  referredByCurrentFamily        Boolean?
+  permissionForSocialMediaPhotos Boolean?
+  specialInformation             String?
+  medicalConditions              String?
+  feesContribution               Boolean?
+  feesContributionPercentage     Int?
+
+  // emergency contacts
+  emergencyContacts EmergencyContact[]
+
+  // doctor(s)
+  doctors StudentDoctor[]
+
+  studentExit StudentExit?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Guardian {
+  id                 String               @id @default(cuid())
+  studentId          String
+  student            Student              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  relationship       GuardianRelationship?
+  fullName           String
+  occupation         String?
+  residentialAddress String?
+  contactPhone       String?
+  whatsappNumber     String?
+  emailAddress       String?
+  preferredContact   PreferredContact?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmergencyContact {
+  id             String  @id @default(cuid())
+  studentId      String
+  student        Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  fullNames      String
+  relationship   String?
+  contactPhone   String?
+  whatsappNumber String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StudentDoctor {
+  id           String  @id @default(cuid())
+  studentId    String
+  student      Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  fullNames    String
+  contactPhone String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Staff {
+  id                    String                  @id @default(cuid())
+  staffId               String?                 
+  firstName             String
+  middleName            String?
+  surname               String
+  gender                Gender?
+  dateOfBirth           DateTime
+  nationality           String?
+  dateOfEmployment      DateTime?
+  highestQualification  String?
+  yearsOfWorkExperience Int?
+  noOfYearsAtCCIS       Int?
+  designation		        String
+  resume                String?
+  staffType             StaffType?
+  comment               String?
+  status StaffStatus @default(ACTIVE)
+
+  // legacy fields for backward compatibility
+  lastName String?
+  email    String?
+  phone    String?
+  address  String?
+ 
+  emergencyContacts StaffEmergencyContact[]
+
+  residentTeachingStaffProfile         ResidentTeachingStaffProfile?
+  residentNonTeachingStaffProfile      ResidentNonTeachingStaffProfile?
+  internationalTeachingStaffProfile    InternationalTeachingStaffProfile?
+  InternationalNonTeachingStaffProfile InternationalNonTeachingStaffProfile?
+
+  staffExit StaffExit?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ResidentTeachingStaffProfile {
+  id                        String @id @default(cuid())
+  nationalIdNo              String?
+  nationalIdAttachment      String?
+  nssfNo                    String?
+  nssfAttachment            String?
+  tinNo                     String?
+  tinAttachment             String?
+  teachingLicenseNo         String?
+  teachingLicenseAttachment String?
+
+  staff   Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  staffId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ResidentNonTeachingStaffProfile {
+  id                   String @id @default(cuid())
+  nationalIdNo         String?
+  nationalIdAttachment String?
+  nssfNo               String?
+  nssfAttachment       String?
+  tinNo                String?
+  tinAttachment        String?
+
+  staff   Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  staffId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InternationalTeachingStaffProfile {
+  id            String @id @default(cuid())
+  tcuNo         String?
+  tcuAttachment String?
+
+  teachingLicenseNo         String?
+  expirationDate            DateTime?
+  teachingLicenseAttachment String?
+
+  workPermitNo             String?
+  workPermitExpirationDate DateTime?
+  workPermitAttachment     String?
+
+  residentPermitNo             String?
+  residentPermitExpirationDate DateTime?
+  residentPermitAttachment     String?
+
+  passportNo             String?
+  passportExpirationDate DateTime?
+  passportAttachment     String?
+
+  staff   Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  staffId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InternationalNonTeachingStaffProfile {
+  id String @id @default(cuid())
+
+  workPermitNo             String?
+  workPermitExpirationDate DateTime?
+  workPermitAttachment     String?
+
+  residentPermitNo             String?
+  residentPermitExpirationDate DateTime?
+  residentPermitAttachment     String?
+
+  passportNo             String?
+  passportExpirationDate DateTime?
+  passportAttachment     String?
+
+  staff   Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  staffId String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StaffEmergencyContact {
+  id           String @id @default(cuid())
+  fullNames    String
+  relationship String?
+  contactPhone String?
+  whatsapp     String?
+  staffId      String
+  staff        Staff  @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StaffExit {
+  id                           String   @id @default(cuid())
+  staffId                      String   @unique
+  staff                        Staff    @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  dateOfExit                   DateTime?
+  notice                       String?
+  certificateOfService         String?
+  letterOfNoObjectionRefNo     String?
+  letterOfNoObjectionAttachment String?
+  staffClearanceForm           String?
+  exitStatement                String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model StudentExit {
+  id                    String   @id @default(cuid())
+  studentId             String   @unique
+  student               Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  dateOfExit            DateTime?
+  destinationSchool     String?
+  nextClass             String?
+  reasonForExit         String?
+  exitStatement         String?
+  studentReport         String?
+  studentClearanceForm  String?
+  otherExitDocuments    String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum StaffType {
+  resident_teaching_staff
+  resident_non_teaching_staff
+  international_teaching_staff
+  international_non_teaching_staff
+}
+
+enum Gender {
+  male
+  female
+}
+
+enum PreferredContact {
+  phone
+  email
+  sms
+  whatsapp
+}
+
+enum GuardianRelationship {
+  mother
+  father
+  guardian
+}
+
+enum Classes {
+  Dik_dik
+  Reception
+  Year_1
+  Year_2
+  Year_3
+  Year_4
+  Year_5
+  Year_6
+}
+
+enum BloodTypes {
+  O_POSITIVE
+  O_NEGATIVE
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+}
+
+enum StudentStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum StaffStatus {
+  ACTIVE
+  INACTIVE
+}
