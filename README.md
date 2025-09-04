@@ -51,41 +51,40 @@ You can deploy this project on **Vercel**, **Netlify**, or any Node.js-compatibl
 ### Installation
 
 1. Clone the repository
-\`\`\`bash
+
 git clone <repository-url>
 cd eduCompact
-\`\`\`
+
 
 2. Install dependencies
-\`\`\`bash
+
 npm install
-\`\`\`
+
 
 3. Set up environment variables
-\`\`\`bash
+
 cp .env.example .env
-\`\`\`
 
 4. Initialize the database
-\`\`\`bash
+
 npm run db:generate
 npm run db:push
-\`\`\`
+
 
 5. Seed the database (optional)
-\`\`\`bash
+
 npm run db:seed
-\`\`\`
+
 
 6. Create users script
-\`\`\`
+
 tsx scripts/seed-users.ts
-\`\`\`
+
 
 7. Start the development server
-\`\`\`bash
+
 npm run dev
-\`\`\`
+
 
 # User Seed Script
 
@@ -108,9 +107,9 @@ The `seed-users.ts` script creates two users in the database using the Prisma OR
 1. **Run the Seed Script**
    - Ensure your database is connected and Prisma is set up properly.
    - Execute the seed script with:
-     ```bash
+
      npx ts-node path/to/seed-users.ts
-     ```
+
    - This will create the users in your database.
 
 2. **Login Credentials**
@@ -136,8 +135,6 @@ Visit `http://localhost:3000` to access the application.
 ## File Upload Structure
 
 The system organizes uploaded files in the following structure:
-
-\`\`\`
 
 
 <img width="327" height="512" alt="image" src="https://github.com/user-attachments/assets/6dd38914-9dae-468a-95ae-58d9527a9e64" />
